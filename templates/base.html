@@ -1,0 +1,381 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+    integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+  <title>Hello, world!</title>
+  <!-- ajax -->
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <!-- fontawesome -->
+  <script src="https://kit.fontawesome.com/7ce061f601.js" crossorigin="anonymous"></script>
+  <!-- w3.css -->
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+
+  <!-- CSS only -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <!-- google fonts -->
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
+  <!-- JS, Popper.js, and jQuery -->
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+    integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+    crossorigin="anonymous"></script>
+  <!-- CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+    integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+  <!-- jQuery and JS bundle w/ Popper.js -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+    crossorigin="anonymous"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<style>
+  #navbar {
+    background-color: rgba(211, 211, 211, 1);
+    border-radius: 25px;
+    top: 0;
+    position: sticky;
+    width: 100vw;
+    z-index: 1;
+  }
+
+  #navul {
+    display: flex;
+    justify-content: space-around;
+    padding: 10px;
+    border: 5px solid lightgray;
+    border-radius: 25px;
+  }
+
+  .navli {
+    list-style: none;
+    font-family: 'Lato', sans-serif;
+    font-size: 1.3rem;
+  }
+
+  #checkout {
+    bottom: 0;
+    right: 0;
+    position: fixed;
+    z-index: 10;
+  }
+
+  #cart_table_show {
+    bottom: 5vh;
+    right: 0;
+    position: fixed;
+    z-index: 10;
+  }
+
+  table {
+    font-family: arial, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    margin: auto;
+  }
+
+  td,
+  th {
+    border: 1px solid darkgray;
+    text-align: left;
+    padding: 8px;
+  }
+
+  tr {
+    background-color: lightgray;
+  }
+
+  #cart_table {
+    bottom: 0;
+    margin-left: 1%;
+    z-index: 10;
+    position: fixed;
+  }
+
+  table tr {
+    color: black;
+  }
+
+  table th {
+    background-color: darkgray;
+  }
+
+  #add_table_close_btn {
+    position: absolute;
+  }
+</style>
+{% block css %} {% endblock %}
+
+<body>
+  <!-- <h1 style="font-family: Montserrat', sans-serif;">NAME</h1> -->
+  <nav id='navbar'>
+    <ul id="navul">
+      <li class="navli"><a class="nava" href='/'>Home</a></li>
+      <li class="navli">|</li>
+      <li class="navli"><a class="nava" href='#'>Contact</a></li>
+      <li class="navli">|</li>
+      <li class="navli"><a class="nava" href='#'>About</a></li>
+      <li class="navli">|</li>
+      <li class="navli"></li>
+    </ul>
+  </nav>
+  <button id="cart_table_show" class="btn btn-primary">Cart(<span id="total_cart"></span>)</button>
+  
+  <form method="POST" action="/checkout" id="checkout">{% csrf_token %}
+    <input name="back_cart" type="hidden" value="" id="back_cart">
+    <input name="total_price" id="total_price" type="hidden" value="">
+    <input type="submit" onclick="return checkout();" value="Checkout" class="btn btn-danger">
+  </form>
+  <table id="cart_table">
+    <tr>
+      <th>Item</th>
+      <th>Qty.</th>
+      <th>Price</th>
+      <th>Remove</th>
+      <th>Total</th>
+      <th><button id="cart_table_close_btn" class="btn btn-danger" style="display:inline-block;margin:auto;"><i
+            class="fas fa-times"></i></button></th>
+    </tr>
+  </table>
+  
+  <!-- {% include 'sliders.html' %} -->
+  {% block body %} {% endblock %}
+</body>
+<script>
+  function checkout(){
+    event.preventDefault();
+    total = document.getElementsByClassName('table_item_total');
+    tot = 0
+    for (var i=0; i<total.length;i++){
+      price = parseInt(total[i].innerText);
+      tot += price;
+    }
+    if(!tot == 0){
+      document.getElementById('back_cart').setAttribute('value', sessionStorage.getItem('back_cart'));
+      document.getElementById('total_price').setAttribute('value', tot);
+      con = confirm("Your total is Rs. " + tot);
+      if (con == true){
+        sessionStorage.clear();
+        $('#checkout').submit();
+      }
+    }
+  }
+  $('#cart_table').hide();
+  $('#checkout').hide();
+  var cart;
+  if (sessionStorage.getItem('total_cart')) {
+    cart = JSON.parse(sessionStorage.getItem('total_cart'));
+    if (sessionStorage.getItem('cart_table')) {
+      cart_table = sessionStorage.getItem('cart_table');
+      document.getElementById('cart_table').innerHTML = cart_table;
+    }
+    if (cart > 0) {
+      $('#checkout').show();
+    }
+    document.getElementById('total_cart').innerText = cart;
+  }
+  else {
+    cart = 0;
+    table_data = sessionStorage.setItem('cart_table', '');
+    sessionStorage.setItem('total_cart', cart);
+    sessionStorage.setItem('back_cart', JSON.stringify([]));
+    document.getElementById('total_cart').innerText = sessionStorage.getItem('total_cart');
+  }
+  cart_items = [];
+  $('.cart_btn').on('click', function () {
+    flag = false;
+    item_id = this.id;
+    item_name = document.getElementById('name' + item_id).innerText;
+    price = document.getElementById('price' + item_id).innerText;
+    console.log(item_id, item_name, price)
+    if (cart != 0) {
+      item_names = document.getElementsByClassName('table_item_name');
+      qty = document.getElementsByClassName('item_qty');
+      minus_btn = document.getElementsByClassName('minus_qty');
+      total = document.getElementsByClassName('table_item_total');
+      console.log(item_names);
+      for (var i = 0; i < item_names.length; i++) {
+        console.log(item_names[i].innerText);
+        if (item_name == item_names[i].innerText) {
+          flag = true;
+          qty = parseInt(qty[i].innerText);
+          qty += 1;
+          cart += 1;
+          total = parseInt(price) + parseInt(total[i].innerText);
+          document.getElementById('table_item_total' + item_id).innerText = total;
+          minus_btn[i].setAttribute('style', '');
+          sessionStorage.setItem('total_cart', cart);
+          document.getElementById('total_cart').innerText = sessionStorage.getItem('total_cart');
+          document.getElementsByClassName('item_qty')[i].innerText = qty;
+          cart_table = document.getElementById('cart_table').innerHTML.toString();
+          sessionStorage.setItem('cart_table', cart_table);
+          bck_cart("plus", item_id, 1);
+        }
+      }
+    }
+    if (flag == false || cart == 0) {
+      console.log('console');
+      row = document.createElement('tr');
+      row.className = 'table_data';
+      row.id = 'table_data' + item_id;
+      da = document.createElement('td');
+      da.className = 'table_item_name';
+      da.id = 'table_item_name' + item_id;
+      da.innerText = item_name;
+      da2 = document.createElement('td');
+      da2.className = 'table_item_qty';
+      da2.innerHTML = '<button id="btn_plus_id' + item_id + '" class="btn plus_qty"><i class="fas fa-plus"></i></button><span id="table_item_qty' + item_id + '" class="item_qty">1</span><button style="display:none;" class="btn minus_qty" id="btn_plus_id' + item_id + '"><i class="fas fa-minus"></i></button>';
+      da3 = document.createElement('td');
+      da3.className = 'table_item_price';
+      da3.id = 'table_item_price' + item_id;
+      da3.innerText = price;
+      da4 = document.createElement('td');
+      da4.innerHTML = '<button id="remove' + item_id + '" class="btn del_table_row"><i class="fas fa-times"></i></button>';
+      da5 = document.createElement('td');
+      da5.className = 'table_item_total'
+      da5.id = 'table_item_total' + item_id;
+      da5.innerHTML = price;
+      row.appendChild(da);
+      row.appendChild(da2);
+      row.appendChild(da3);
+      row.appendChild(da4);
+      row.appendChild(da5);
+      document.getElementById('cart_table').appendChild(row);
+      cart_table = document.getElementById('cart_table').innerHTML.toString();
+      sessionStorage.setItem('cart_table', cart_table);
+      cart += 1;
+      sessionStorage.setItem('total_cart', cart);
+      document.getElementById('total_cart').innerText = sessionStorage.getItem('total_cart');
+      bck_cart('plus', item_id, 1);
+      if (sessionStorage.getItem('total_cart') > 0) {
+        $('#checkout').show();
+      }
+    }
+  });
+  $('#cart_table_show').on('click', function () {
+    $('#cart_table').show();
+    $('#cart_table_show').hide();
+    $('#checkout').hide();
+    // if (sessionStorage.getItem('total_cart') > 0){
+    //   $('#checkout').show();
+    // }
+  })
+  $('#cart_table_close_btn').on('click', function () {
+    $('#cart_table_show').show();
+    $('#cart_table').hide();
+    if (sessionStorage.getItem('total_cart') > 0) {
+      $('#checkout').show();
+    }
+  })
+  $(document).on('click', '.plus_qty', function () {
+    qty = parseInt($(this).next().text());
+    if (qty < 5) {
+      qty += 1;
+      console.log(qty);
+      $(this).next().text(qty);
+      if (qty > 1) {
+        $(this).next().next().show();
+      }
+      cart += 1;
+      btn_id = (this.id).slice(11);
+      console.log(btn_id);
+      var total = parseInt(document.getElementById('table_item_total' + btn_id).innerText);
+      total += parseInt(document.getElementById('table_item_price' + btn_id).innerText);
+      document.getElementById('table_item_total' + btn_id).innerText = total;
+      sessionStorage.setItem('total_cart', cart);
+      document.getElementById('total_cart').innerText = sessionStorage.getItem('total_cart');
+      cart_table = document.getElementById('cart_table').innerHTML.toString();
+      sessionStorage.setItem('cart_table', cart_table);
+      bck_cart("plus", btn_id, 1);
+    }
+  })
+  $(document).on('click', '.minus_qty', function () {
+    qty = parseInt($(this).prev().text());
+    if (qty > 1) {
+      qty -= 1;
+      console.log(qty);
+      $(this).prev().text(qty);
+      if (qty == 1) {
+        $(this).hide();
+      }
+      cart -= 1;
+      btn_id = (this.id).slice(11);
+      console.log(btn_id);
+      var total = parseInt(document.getElementById('table_item_total' + btn_id).innerText);
+      total -= parseInt(document.getElementById('table_item_price' + btn_id).innerText);
+      console.log(total);
+      document.getElementById('table_item_total' + btn_id).innerText = total;
+      sessionStorage.setItem('total_cart', cart);
+      document.getElementById('total_cart').innerText = sessionStorage.getItem('total_cart');
+      cart_table = document.getElementById('cart_table').innerHTML.toString();
+      sessionStorage.setItem('cart_table', cart_table);
+      bck_cart("minus", btn_id, 1);
+    }
+  });
+  $(document).on('click', '.del_table_row', function () {
+    row_id = (this.id).slice(6);
+    console.log(row_id);
+    qty = parseInt(document.getElementById('table_item_qty' + row_id).innerText);
+    cart -= qty
+    sessionStorage.setItem('total_cart', cart);
+    document.getElementById('total_cart').innerText = sessionStorage.getItem('total_cart');
+    var el = document.getElementById('table_data' + row_id).remove();
+    cart_table = document.getElementById('cart_table').innerHTML.toString();
+    sessionStorage.setItem('cart_table', cart_table);
+    bck_cart('minus', row_id, qty);
+  });
+  function bck_cart(sign, item_id, qty) {
+    back_cart = JSON.parse(sessionStorage.getItem('back_cart'));
+    console.log(item_id);
+    if (back_cart.length == 0) {
+      back_cart[0] = ([item_id, qty]);
+      console.log('iiiinull', back_cart);
+    }
+    else {
+      flag2 = false;
+      for (var i = 0; i < back_cart.length; i++) {
+        // console.log('iiii', back_cart[i], back_cart[i][0]);
+        console.log(item_id,"dffdgdg", back_cart[i][0])
+        if (back_cart[i][0] == item_id) {
+          flag2 = true;
+          if (sign == 'plus'){
+            z = back_cart[i][1];
+            console.log('z', z);
+            back_cart[i][1] = z + qty;
+          }
+          else{
+            z = back_cart[i][1];
+            back_cart[i][1] = z - qty;
+          }  
+          console.log('present', back_cart);
+        }
+      }
+      if (flag2 == false) {
+        back_cart[back_cart.length] = [item_id, qty];
+        console.log('not present', back_cart);
+        flag2 = false;
+      }
+    }
+    console.log(back_cart.length);
+    sessionStorage.setItem('back_cart', JSON.stringify(back_cart));
+  }
+</script>
+
+</html>

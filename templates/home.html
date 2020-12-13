@@ -1,0 +1,273 @@
+{% extends 'base.html' %}
+{% block css %}
+<style>
+  #Lunchs, #Deserts, #Dinners {
+    display: none;
+  }
+
+  .myclass2 {
+    font-size: 1.2rem;
+    font-weight: bolder;
+  }
+
+  small {
+    color: blue;
+    display: block;
+    padding: 0;
+    margin: 0;
+  }
+  .carousel-caption{
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 20px;
+  }
+
+  .myclass2 .carousel-indicators {
+    background-color: rgba(0, 0, 0, 0.4);
+    border-radius: 25px;
+    width: 100px;
+    margin: auto;
+  }
+
+  .tab {
+    overflow: hidden;
+    border: 1px solid #ccc;
+    background-color: #f1f1f1;
+  }
+
+  /* Style the buttons inside the tab */
+  .tab button {
+    background-color: inherit;
+    float: left;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    padding: 10px;
+    transition: 0.3s;
+    font-size: 17px;
+  }
+
+  /* Change background color of buttons on hover */
+  .tab button:hover {
+    background-color: #ddd;
+  }
+
+  .tab button.active {
+    background-color: #ccc;
+  }
+
+  .container {
+    margin: 0;
+    padding: 0;
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .myclass2 .carousel-control-next-icon:after {
+    content: '>';
+    font-size: 55px;
+    color: red;
+  }
+
+  .myclass2 .carousel-control-prev-icon:after {
+    content: '<';
+    font-size: 55px;
+    color: red;
+  }
+
+  .catsa {
+    border: 2px solid darkgrey;
+    border-radius: 25px;
+    box-shadow: 4px 5px darkgrey;
+    padding: 10px;
+    margin: 10px;
+    list-style: none;
+    font-size: 1.5rem;
+    font-weight: bolder;
+    text-align: center;
+  }
+
+  .sliders {
+    margin: 0;
+    padding: 0;
+  }
+  .card{
+    display: inline-block;
+  }
+  #popover{
+    display: none;
+  }
+  #popover_close{
+    margin-left: 40%;
+    color: white
+  }
+  #nikotin_zone_contents{
+    display: none;
+  }
+  .nza{
+    text-decoration: underline;
+    font-size: 1.8rem;
+    /* color: darkblue; */
+  }
+  .carousel-caption{
+    z-index: 0;
+  }
+  @media screen and (min-width: 600px) {
+    .myclass2 {
+      height: 60vh;
+      width: 80vw;
+    }
+
+    .myclass2 img {
+      height: auto;
+      width: auto;
+      margin: auto;
+      max-height: 60vh;
+      border-radius: 20px;
+    }
+  }
+
+  @media screen and (max-width: 600px) {
+
+    .myclass2  .carousel-control-prev-icon,
+    .myclass2 .carousel-control-next-icon {
+      display: none;
+    }
+    .myclass2 img{
+     height: 250px; 
+     max-height: 250px;
+     width: auto;
+     max-width: 100%;
+     border-radius: 20px;
+    }
+  }
+</style> 
+{% endblock %}
+{% block body %}
+<section style="margin-top: 2%;">
+  <div class="container">
+    <div class="tab">
+      <button id="1" class="tablinks active" onclick="openCity((this.id), 'BreakFasts')">BreakFasts</button>
+      <button id="2" class="tablinks" onclick="openCity((this.id), 'Lunchs')">Lunchs</button>
+      <button id="3" class="tablinks" onclick="openCity((this.id), 'Dinners')">Dinners</button>
+      <button id="4" class="tablinks" onclick="openCity((this.id), 'Deserts')">Deserts</button>
+    </div>
+    {% include 'hometops.html' %}
+  </div>
+</section>
+<section style="margin-top: 5%;">
+  <h2 style="text-align: center;background-color: darkgray;padding: 10px; border-radius: 15px;">More Categories -
+  </h2>
+  <div class="container mt-4 row">
+    <a class="catsa col-5 col-lg-3" href="#">Non-veg</a>
+    <a class="catsa col-5 col-lg-3" href="#">Veg</a>
+    <a class="catsa col-5 col-lg-3" href="#">Breakfasts</a>
+    <a class="catsa col-5 col-lg-3" href="#">Lunchs</a>
+    <a class="catsa col-5 col-lg-3" href="#">Dinner</a>
+    <a class="catsa col-5 col-lg-3" href="#">Deserts</a>
+    <a class="catsa col-5 col-lg-3" href="#">Drinks</a>    
+    <a role="button" class="catsa col-5 col-lg-3 btn" id="nikotin_zone">Nicotine Zone</a>
+  </div>
+  <button style="margin: auto;" data-html="true" id="popover" type="button" class="btn btn-secondary" data-container="body" data-toggle="popover" data-placement="top" data-content="">
+    <i class="fas fa-caret-up"></i>
+  </button>
+</section>
+<section>
+  <h2 style="text-align: center;background-color: darkgray;padding: 10px; border-radius: 15px;">Buy 2 Get 1 Free Zone <i class="far fa-smile-wink"></i>
+  </h2>
+  <!-- <div class="sliders row">
+    <div class="card col-6 col-lg-3" style="">
+      <img src="..." class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+          content.</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+      </div>
+    </div>
+    <div class="card col-6 col-lg-3" style="">
+      <img src="..." class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+          content.</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+      </div>
+    </div>
+    <div class="card col-6 col-lg-3" style="">
+      <img src="..." class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+          content.</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+      </div>
+    </div>
+    <div class="card col-6 col-lg-3" style="">
+      <img src="..." class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+          content.</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+      </div>
+    </div>
+    <div class="card col-6 col-lg-3" style="">
+      <img src="..." class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+          content.</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+      </div>
+    </div>
+    <div class="card col-6 col-lg-3" style="">
+      <img src="..." class="card-img-top" alt="...">
+      <div class="card-body">
+        <h5 class="card-title">Card title</h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
+          content.</p>
+        <a href="#" class="btn btn-primary">Go somewhere</a>
+      </div>
+    </div>
+
+  </div> -->
+</section>
+<section>
+  {% include 'sliders.html' %}
+</section>
+<div id="nikotin_zone_contents">
+  <a class="btn btn-danger" role="button" id="popover_close"><i class="fas fa-times"></i></a>
+  <ul class="nzul">
+    <li class="nzli"><a href="/nicotine_zone/Cigrattes" id="nz_cigratte" class="nza">Cigrattes</a></li>
+    <li class="nzli"><a href="/nicotine_zone/Tobacco" id="nz_tobacco" class="nza">Tobbacco</a></li>
+    <li class="nzli"><a href="/nicotine_zone/Jarda Masala" id="nz_jm" class="nza">Jarda Masala</a></li>
+  </ul>
+</div>
+<script>
+  function openCity(evt, name) {
+    var elems = document.getElementsByClassName('myclass2');
+    for (var i = 0; i < elems.length; i += 1) {
+      elems[i].style.display = 'none';
+    }
+    var acts = document.getElementsByClassName('tablinks');
+    for (var i = 0; i < elems.length; i += 1) {
+      acts[i].className = 'tablinks';
+    }
+    document.getElementById(evt).className += ' active';
+    document.getElementById(name).style.display = 'block';
+  }
+  $('#nikotin_zone').on('click', function(){
+    console.log('asdf');
+    document.getElementById('popover').style.display = 'block';
+    content = document.getElementById('nikotin_zone_contents').innerHTML;
+    document.getElementById('popover').setAttribute('data-content', content);
+    $('#popover').popover('show');
+  })
+  $(document).on('click', '#popover_close', function(){
+    console.log('clicked');
+    $('#popover').popover('hide');
+    document.getElementById('popover').style.display = 'none';
+  })
+</script>
+{% endblock %}
